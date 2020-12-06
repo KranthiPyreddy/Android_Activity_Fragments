@@ -6,12 +6,12 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class CheatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_cheat);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
