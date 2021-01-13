@@ -2,12 +2,17 @@ package com.codewithpk.criminalintent;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,23 +28,8 @@ public class CrimeListViewModel extends ViewModel {
             mCrimes.add(crime);
         }
     }
-
     public List<Crime> getCrimes() {
         return mCrimes;
     }
-    public static class CrimeListFragment extends Fragment {
-        private static String TAG = "CrimeListFragment";
-        private CrimeListViewModel mCrimeListViewModel;
+}
 
-        public static CrimeListFragment newInstance() {
-            return new CrimeListFragment();
-        }
-        @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            ViewModelProvider provider = ViewModelProviders.of(this);
-            mCrimeListViewModel = provider.get(CrimeListViewModel.class);
-            Log.d(TAG, "Total crimes: " + mCrimeListViewModel.getCrimes().size());
-        }
-}
-}
