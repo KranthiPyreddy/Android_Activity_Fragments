@@ -9,13 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {
@@ -31,11 +34,24 @@ public class CrimeListFragment extends Fragment {
         mCrimeRecyclerView = (RecyclerView) view
                 .findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        updateUI();
+        mAdapter = new CrimeAdapter(new ArrayList<Crime>());
+        mCrimeRecyclerView.setAdapter(mAdapter);
+        //updateUI();
         return view;
     }
-    private void updateUI() {
-        List<Crime> crimes = mCrimeListViewModel.getCrimes();
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final Observer<List<Crime>> crimesObserver = new Observer<List<Crime>>() {
+            @Override
+            public void onChanged(@Nullable final List<Crime> crimes) {
+                updateUI(crimes);
+            }
+        };
+        mCrimeListViewModel.getCrimes().observe(this.getViewLifecycleOwner(), crimesObserver);
+    }
+    private void updateUI(List<Crime> crimes) {
+        //List<Crime> crimes = mCrimeListViewModel.getCrimes();
         mAdapter = new CrimeAdapter(crimes);
         mCrimeRecyclerView.setAdapter(mAdapter);
     }
@@ -47,7 +63,8 @@ public class CrimeListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ViewModelProvider provider = ViewModelProviders.of(this);
         mCrimeListViewModel = provider.get(CrimeListViewModel.class);
-        Log.d(TAG, "Total crimes: " + mCrimeListViewModel.getCrimes().size());
+        mCrimeListViewModel.initData(this.getContext());
+        //Log.d(TAG, "Total crimes: " + mCrimeListViewModel.getCrimes().size());
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

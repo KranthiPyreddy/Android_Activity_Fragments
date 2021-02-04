@@ -1,43 +1,56 @@
 package com.codewithpk.criminalintent;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.Date;
 import java.util.UUID;
-
+@Entity
 public class Crime {
-    private UUID mId;
-    private String mTitle;
-    private Date mDate;
-    private boolean mSolved;
+    @PrimaryKey
+    @NonNull
+    private UUID id;
+    @NonNull
+    private String title;
+    @NonNull
+    private Date date;
+    private boolean isSolved;
     public Crime() {
-        mId = UUID.randomUUID();
-        mDate = new Date();
+        id = UUID.randomUUID();
+        date = new Date();
     }
-//Getter
+
+    public void setId(@NonNull UUID id) {
+        this.id = id;
+    }
+
+    //Getter
     public UUID getId() {
-        return mId;
+        return id;
     }
 //Getter & Setter
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     public void setTitle(String title) {
-        mTitle = title;
+        this.title = title;
     }
 
     public Date getDate() {
-        return mDate;
+        return date;
     }
 
     public void setDate(Date date) {
-        mDate = date;
+        this.date = date;
     }
 
     public boolean isSolved() {
-        return mSolved;
+        return isSolved;
     }
 
     public void setSolved(boolean solved) {
-        mSolved = solved;
+        isSolved = solved;
     }
 }
