@@ -10,13 +10,27 @@ import com.codewithpk.database.CrimeDatabase;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CrimeRepository {
     private final String DATABASE_NAME = "crime-database";
     private CrimeDao mCrimeDao;
     private static CrimeRepository sCrimeRepository;
     private Context mContext;
-
+//Add a property to the executor to hold a reference, then execute your insert and update functions using the executor
+    private ExecutorService mExecutor = Executors.newSingleThreadExecutor();
+    //Inserting and updating with an executor
+    public void updateCrime(Crime crime) {
+        mExecutor.execute(() -> {
+            mCrimeDao.updateCrime(crime);
+        });
+    }
+    public void addCrime(Crime crime) {
+        mExecutor.execute(() -> {
+            mCrimeDao.addCrime(crime);
+        });
+    }
     public static CrimeRepository get(Context context) {
         if (sCrimeRepository == null) {
             sCrimeRepository = new CrimeRepository(context);

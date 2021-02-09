@@ -1,5 +1,6 @@
 package com.codewithpk.criminalintent;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,12 +21,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CrimeListFragment extends Fragment {
     private static String TAG = "CrimeListFragment";
     private CrimeListViewModel mCrimeListViewModel;
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    /**
+     * Required interface for hosting activities
+     */
+    interface Callbacks {
+        void onCrimeSelected(UUID crimeId);
+    }
+    private Callbacks mCallbacks = null;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks)context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +63,12 @@ public class CrimeListFragment extends Fragment {
             }
         };
         mCrimeListViewModel.getCrimes().observe(this.getViewLifecycleOwner(), crimesObserver);
+    }
+    //Override onAttach(Context) and onDetach() to set and unset the callbacks property
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
     }
     private void updateUI(List<Crime> crimes) {
         //List<Crime> crimes = mCrimeListViewModel.getCrimes();
@@ -87,9 +107,12 @@ public class CrimeListFragment extends Fragment {
         }
         @Override
         public void onClick(View view) {
-            Toast.makeText(getActivity(),
+            /* Toast.makeText(getActivity(),
                     mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT)
-                    .show();
+                    .show(); */
+            if (mCallbacks != null) {
+                mCallbacks.onCrimeSelected(mCrime.getId());
+            }
         }
     }
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
