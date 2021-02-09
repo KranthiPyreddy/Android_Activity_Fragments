@@ -113,7 +113,7 @@ public class CrimeFragment extends Fragment {
     private void updateUI() {
         mTitleField.setText(mCrime.getTitle());
         mDateButton.setText(mCrime.getDate().toString());
-        //mSolvedCheckBox.setChecked(mCrime.isSolved());
+        mSolvedCheckBox.setChecked(mCrime.isSolved());
         //code to skip the checkbox animation
         mSolvedCheckBox.jumpDrawablesToCurrentState();
     }
