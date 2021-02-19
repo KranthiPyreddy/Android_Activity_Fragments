@@ -1,3 +1,4 @@
+
 package com.codewithpk.criminalintent;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,8 @@ public class Crime {
     public Crime() {
         id = UUID.randomUUID();
         date = new Date();
+        title = "";
+        isSolved = false;
     }
 
     public void setId(@NonNull UUID id) {

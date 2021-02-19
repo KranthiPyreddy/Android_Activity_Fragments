@@ -21,6 +21,7 @@ import java.util.List;
 
 public class CrimeListViewModel extends ViewModel {
     LiveData<List<Crime>> mCrimeListLiveData;
+    CrimeRepository mCrimeRepository;
     public CrimeListViewModel() {
         /* mCrimes = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -31,11 +32,17 @@ public class CrimeListViewModel extends ViewModel {
         } */
     }
     public void initData(Context context) {
-        CrimeRepository crimeRepository = CrimeRepository.get(context);
-        mCrimeListLiveData = crimeRepository.getCrimes();
+        /* CrimeRepository crimeRepository = CrimeRepository.get(context);
+        mCrimeListLiveData = crimeRepository.getCrimes(); */
+        mCrimeRepository = CrimeRepository.get(context);
+        mCrimeListLiveData = mCrimeRepository.getCrimes();
     }
     public LiveData<List<Crime>>getCrimes() {
         return mCrimeListLiveData;
+    }
+    //Adding a new crime
+    public void addCrime(Crime crime) {
+        mCrimeRepository.addCrime(crime);
     }
 }
 

@@ -19,9 +19,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.util.Date;
 import java.util.UUID;
 
-public class CrimeFragment extends Fragment {
+public class CrimeFragment extends Fragment implements DatePickerFragment.Callbacks {
+    private static final String DIALOG_DATE = "DialogDate";
+    private static final int REQUEST_DATE = 0;
+
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String TAG = "CrimeFragment";
     private Crime mCrime;
@@ -82,7 +86,19 @@ public class CrimeFragment extends Fragment {
         });
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         mDateButton.setText(mCrime.getDate().toString());
-        mDateButton.setEnabled(false);
+        //mDateButton.setEnabled(false);
+        //Showing your DialogFragment
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //DatePickerFragment dateFragment = new DatePickerFragment();
+                //Adding a call to newInstance(…)
+                DatePickerFragment dateFragment = DatePickerFragment.newInstance(mCrime.getDate());
+                //create a constant for the request code and then make CrimeFragment the target fragment of the DatePickerFragment instance  #Constant line 26
+                dateFragment.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                dateFragment.show(requireFragmentManager(), DIALOG_DATE);
+            }
+        });
 
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -109,6 +125,12 @@ public class CrimeFragment extends Fragment {
     public void onStop() {
         super.onStop();
         mCrimeDetailViewModel.saveCrime(mCrime);
+    }
+    //implement the Callbacks interface in CrimeFragment. In onDateSelected(), set the date on the crime property and update the UI
+    @Override
+    public void onDateSelected(Date date) {
+        mCrime.setDate(date);
+        updateUI();
     }
     private void updateUI() {
         mTitleField.setText(mCrime.getTitle());

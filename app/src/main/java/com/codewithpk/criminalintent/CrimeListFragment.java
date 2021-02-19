@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -70,6 +73,27 @@ public class CrimeListFragment extends Fragment {
         super.onDetach();
         mCallbacks = null;
     }
+    //Inflating a menu resource
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime_list, menu);
+    }
+    //Responding to menu selection
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.new_crime:
+                Crime crime = new Crime();
+                mCrimeListViewModel.addCrime(crime);
+                if (mCallbacks != null) {
+                    mCallbacks.onCrimeSelected(crime.getId());
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private void updateUI(List<Crime> crimes) {
         //List<Crime> crimes = mCrimeListViewModel.getCrimes();
         mAdapter = new CrimeAdapter(crimes);
@@ -81,6 +105,8 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Receiving menu callbacks
+        setHasOptionsMenu(true);
         ViewModelProvider provider = ViewModelProviders.of(this);
         mCrimeListViewModel = provider.get(CrimeListViewModel.class);
         mCrimeListViewModel.initData(this.getContext());
