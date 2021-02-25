@@ -39,7 +39,12 @@ public class CrimeRepository {
     }
     private CrimeRepository(Context context) {
         mContext = context;
-        CrimeDatabase database = Room.databaseBuilder(mContext.getApplicationContext(), CrimeDatabase.class, DATABASE_NAME).build();
+
+        //After you create your Migration, you need to provide it to your database when it is created
+        //Providing migration to Room
+
+        CrimeDatabase database = Room.databaseBuilder(mContext.getApplicationContext(), CrimeDatabase.class, DATABASE_NAME).
+                addMigrations(CrimeDatabase.MIGRATION_1_2).build();
         mCrimeDao = database.crimeDao();
     }
     public LiveData<List<Crime>>getCrimes() {

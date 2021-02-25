@@ -17,11 +17,15 @@ public class Crime {
     @NonNull
     private Date date;
     private boolean isSolved;
+    //give Crime a property that will hold the name of a suspect
+    @NonNull
+    private String suspect;
     public Crime() {
         id = UUID.randomUUID();
         date = new Date();
         title = "";
         isSolved = false;
+        suspect = "";
     }
 
     public void setId(@NonNull UUID id) {
@@ -55,5 +59,12 @@ public class Crime {
 
     public void setSolved(boolean solved) {
         isSolved = solved;
+    }
+
+    public String getSuspect() {
+        return suspect;
+    }
+    public void setSuspect(String suspect) {
+        this.suspect = suspect;
     }
 }
