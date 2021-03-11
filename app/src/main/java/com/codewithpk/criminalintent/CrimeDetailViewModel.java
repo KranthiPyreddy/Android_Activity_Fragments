@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.io.File;
 import java.util.UUID;
 
 public class CrimeDetailViewModel extends ViewModel {
@@ -32,6 +33,11 @@ public class CrimeDetailViewModel extends ViewModel {
     //Adding save capability
     public void saveCrime(Crime crime) {
         mCrimeRepository.updateCrime(crime);
+    }
+
+//Add a function to CrimeDetailViewModel to expose the file information to CrimeFragment
+    public File getPhotoFile(Crime crime) {
+        return mCrimeRepository.getPhotoFile(crime);
     }
 }
 

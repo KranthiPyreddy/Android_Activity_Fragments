@@ -27,6 +27,10 @@ public class Crime {
         isSolved = false;
         suspect = "";
     }
+    // to give your pictures a place to live on disk locally
+    public String getPhotoFilename() {
+        return "IMG_" + this.id + ".jpg";
+    }
 
     public void setId(@NonNull UUID id) {
         this.id = id;

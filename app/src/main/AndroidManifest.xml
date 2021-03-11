@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codewithpk.criminalintent">
-
+    /*  To declare that you use the camera, add a uses-feature tag to your AndroidManifest.xml */
+    <uses-feature android:name="android.hardware.camera"
+    android:required="false"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +18,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+    //adding a content provider declaration to your Android manifest
+        <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="com.codewithpk.criminalintent.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+            //Hooking up the paths description.
+            <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/files"/>
+        </provider>
     </application>
 
 </manifest>
